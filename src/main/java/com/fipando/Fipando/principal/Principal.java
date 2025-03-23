@@ -1,8 +1,13 @@
 package com.fipando.Fipando.principal;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fipando.Fipando.model.DadosMarcas;
+import com.fipando.Fipando.model.Marca;
 import com.fipando.Fipando.service.ConsomeApi;
 import com.fipando.Fipando.service.ConverteDados;
 
+import java.util.List;
+import java.util.Objects;
 import java.util.Scanner;
 
 public class Principal {
@@ -42,12 +47,16 @@ public class Principal {
             }
         }
 
-
             System.out.println(tipoBuscado);
 
         String url = "https://parallelum.com.br/fipe/api/v1/"+ tipoBuscado +"/marcas";
-        var json = consomeApi.obterDados(url);
-        System.out.println(json);
+        String json = consomeApi.obterDados(url);
+
+        List<DadosMarcas> listaMarcas = converteDados.obterListaDeDados(json,new TypeReference<List<DadosMarcas>>() {});
+
+        for (DadosMarcas marcas : listaMarcas){
+            System.out.println(String.format("COD %-4d --  Marca: %s",marcas.getCodigo(),marcas.getMarca()));
+        }
 
     }
 }
