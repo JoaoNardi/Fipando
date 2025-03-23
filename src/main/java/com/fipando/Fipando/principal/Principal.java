@@ -16,44 +16,18 @@ public class Principal {
     private Scanner scanner = new Scanner(System.in);
 
     public void inicia(){
-
-        System.out.println("Qual tipo de veículo deseja buscar?");
-        System.out.println("""
-                (Digite o numero da opção!)
-                1 - Carros
-                2 - Motos
-                3 - Caminhões
-                """);
-
-
-        String tipoBuscado = "";
-
-        while (tipoBuscado.isEmpty()) {
-            int numeroDigitado = scanner.nextInt();
-            scanner.nextLine();
-            switch (numeroDigitado) {
-                case 1:
-                    tipoBuscado = "carros";
-                    break;
-                case 2:
-                    tipoBuscado = "motos";
-                    break;
-                case 3:
-                    tipoBuscado = "caminhoes";
-                    break;
-                default:
-                    System.out.println("digite uma opcao valida");
-
-            }
-        }
+            EscolheTipo escolheTipo = new EscolheTipo(); //intacia a classe para escolher tipo
+            String tipoBuscado = escolheTipo.getTipoBuscado(); //ativa metodo para escolha do tipo
 
             System.out.println(tipoBuscado);
 
-        String url = "https://parallelum.com.br/fipe/api/v1/"+ tipoBuscado +"/marcas";
-        String json = consomeApi.obterDados(url);
+        String url = "https://parallelum.com.br/fipe/api/v1/"+ tipoBuscado +"/marcas"; //constroi url para api
+        String json = consomeApi.obterDados(url); //puxa o body do api com base no url
 
-        List<DadosMarcas> listaMarcas = converteDados.obterListaDeDados(json,new TypeReference<List<DadosMarcas>>() {});
+        List<DadosMarcas> listaMarcas = converteDados
+                .obterListaDeDados(json,new TypeReference<List<DadosMarcas>>() {}); //puxa as marcas para lista
 
+        //impressao das marcas
         for (DadosMarcas marcas : listaMarcas){
             System.out.println(String.format("COD %-4d --  Marca: %s",marcas.getCodigo(),marcas.getMarca()));
         }
