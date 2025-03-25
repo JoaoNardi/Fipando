@@ -5,5 +5,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import java.util.List;
 
 public interface IConverteDados {
-    String obterDados(String json, Class classe);
+    <T> T obterDados(String json, Class<T> classe);
+
+    <T> List<T> obterLista(String json, Class<T> classe);
 }
