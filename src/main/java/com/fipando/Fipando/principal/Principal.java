@@ -22,12 +22,13 @@ public class Principal {
     String urlBase = "https://parallelum.com.br/fipe/api/v1/";
 
     public void inicia() throws JsonProcessingException {
-        EscolheTipo escolheTipo = new EscolheTipo(); //intacia a classe para escolher tipo
-        String tipoBuscado = escolheTipo.getTipoBuscado(); //ativa metodo para escolha do tipo
+        TipoBuscado tipoBuscado = new TipoBuscado(); //intacia a classe para escolher tipo
+        tipoBuscado.escolhaTipo();
+        String escolha = tipoBuscado.getVeiculoBuscado() ; //ativa metodo para escolha do tipo
 
-        System.out.println(tipoBuscado);
+        System.out.println(escolha);
 
-        String urlTipo = urlBase + tipoBuscado +"/marcas/"; //constroi url para api
+        String urlTipo = urlBase + escolha +"/marcas/"; //constroi url para api
         var jsonMarcas = consomeApi.obterDados(urlTipo); //puxa o body do api com base no url
 
         List<DadosMarcas> listaMarcas = converteDados.obterLista(jsonMarcas, DadosMarcas.class); //puxa as marcas para lista
@@ -65,7 +66,7 @@ public class Principal {
                 .forEach(a -> System.out.println(String.format("Versao: %s",a.anoTipo())));
 
         System.out.println("Escolha o ano para ver detalhes.");
-        var buscaDetalhes = scanner.next() + "-1";
+        var buscaDetalhes = scanner.next() + "-" + tipoBuscado.getNumeroBuscado();
         scanner.nextLine();
 
         String urlDetalhes = urlModelo+buscaDetalhes;
