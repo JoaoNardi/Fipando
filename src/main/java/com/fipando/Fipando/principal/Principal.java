@@ -34,7 +34,7 @@ public class Principal {
         List<DadosMarcas> listaMarcas = converteDados.obterLista(jsonMarcas, DadosMarcas.class); //puxa as marcas para lista
 
         listaMarcas.stream()
-                .sorted(Comparator.comparing(DadosMarcas::codigo)) //ordenando
+                .sorted(Comparator.comparing(DadosMarcas::marca)) //ordenando
                 .forEach(p -> System.out.println((String.format("COD %-4d --  Marca: %s",p.getCodigo(),p.getMarca()))));//impressao das marcas
 
 
