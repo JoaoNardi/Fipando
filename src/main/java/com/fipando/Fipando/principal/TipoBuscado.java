@@ -4,13 +4,39 @@ import java.util.List;
 import java.util.Scanner;
 
 public class TipoBuscado {
-        private String veiculoBuscado = "";
-        private String numeroBuscado = "";
+    private String veiculoBuscado = "";
+    private String numeroBuscado = "";
 
-    Scanner scanner = new Scanner(System.in);
+    private final Scanner scanner = new Scanner(System.in);
+
+
+    private String loopTipo() {
+        String busca = "";
+        List<String> lista = List.of("carros", "motos", "caminhoes");
+
+        while (busca.isEmpty()) {
+            System.out.println("Digite o tipo de veiculo ou numero correspondente:");
+            String inputBusca = scanner.next().toLowerCase().trim();
+            scanner.nextLine();
+
+
+            if (inputBusca.length() > 1) {
+                busca = lista.stream().filter(p -> p.contains(inputBusca)).findFirst().orElse("");
+            } else busca = inputBusca;
+
+            if (busca.isEmpty()) {
+                System.out.println("Entrada invalida");
+
+            }
+
+        }
+        return busca;
+    }
 
     //metodo para definir o tipo buscado
-    public void escolhaTipo(){
+    public void escolhaTipo() {
+        veiculoBuscado = "";
+        numeroBuscado = "";
 
         System.out.println("Qual tipo de veículo deseja buscar?");
         System.out.println("""
@@ -20,44 +46,61 @@ public class TipoBuscado {
                 3 - Caminhões
                 """);
 
-        var inputBusca = scanner.next();
-        List<String> listaPossiveis = List.of("1","2","3");
-        var busca = inputBusca;
-        scanner.nextLine();
+
+        var busca2 = loopTipo();
 
 
-//        if (inputBusca.length() == 1){
-//            busca = inputBusca;
-//        }
-//        if (inputBusca.length() == 1 && !listaPossiveis.contains(inputBusca.trim()))
-//        {
-//            throw new IllegalArgumentException("Erro! especifique melhor sua busca");
-//        }
-//
-        System.out.println(busca);
         while (veiculoBuscado.isEmpty()) {
-            switch (busca) {
-                case "1" :
-                case "carros":
+            switch (busca2) {
+                case "1" ,"carros" ->{
                     veiculoBuscado = "carros";
                     numeroBuscado = "1";
-                    break;
-                case "2":
-                case "motos":
+                }
+                case "2" , "motos" ->{
                     veiculoBuscado = "motos";
                     numeroBuscado = "2";
-                    break;
-                case "3":
-                case "caminhões":
+                }
+                case "3", "caminhões" ->{
                     veiculoBuscado = "caminhoes";
                     numeroBuscado = "3";
-                    break;
-                default:
-                    System.out.println("digite uma opcao valida");
+                }
+
+                default ->System.out.println("digite uma opcao valida");
+
 
             }
         }
+        validarEscolha();
     }
+        private void validarEscolha() {
+            System.out.println("\n" + "Atenção! Confirme sua escolha!");
+            System.out.println("***Você selecionou: " + numeroBuscado + " " + veiculoBuscado + " ?***");
+            System.out.println("(Digite -SIM- para prosseguir ou -NAO- para escolher outro tipo)" + "\n");
+
+            String validacao = "";
+            while (validacao.isEmpty()) {
+                validacao = scanner.next().toLowerCase();
+                scanner.nextLine();
+                switch (validacao) {
+                    case "sim" -> {
+                        System.out.println("Busca confirmada!");
+                        return;
+                    }
+                    case "nao" -> {
+                        veiculoBuscado = "";
+                        numeroBuscado = "";
+                        escolhaTipo();
+                        return;
+                    }
+                    default -> {
+                        System.out.println("Opção invalida");
+                        validacao = "";
+                    }
+
+                }
+            }
+        }
+
 
     public String getVeiculoBuscado() {
         return veiculoBuscado;
